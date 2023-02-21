@@ -32,7 +32,7 @@ class Adaptor<
 		this.rawStop.bind(this),
 	);
 	public cp?: ChildProcess;
-	public socket?: Multiplex.Like<Multiplex.Message<'control' | 'handle' | 'rpc', any>>;
+	public socket?: Multiplex.Like<Multiplex.Message<unknown>>;
 	public control?: Control;
 	public rpc?: Rpc<rpcPicked>;
 	public handle?: Handle<handlePicked>;

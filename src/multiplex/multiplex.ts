@@ -4,16 +4,14 @@ import EventEmitter = require("events");
 
 
 export class Multiplex<
-	channelName extends string,
+	// channelName extends string,
 	sent,
 	received = sent,
 > extends EventEmitter implements Multiplex.Like<sent, received> {
 	// private readyState = ReadyState.STARTED;
 	public constructor(
-		private socket: Multiplex.Like<
-			Multiplex.Message<string, any>
-		>,
-		private channelName: channelName,
+		private socket: Multiplex.Like<Multiplex.Message<unknown>>,
+		private channelName: string,
 	) {
 		super();
 		this.socket.on('message', this.onMessage);
@@ -22,7 +20,7 @@ export class Multiplex<
 
 	}
 
-	private onMessage = (message: Multiplex.Message<channelName, received>) => {
+	private onMessage = (message: Multiplex.Message<received>) => {
 		if (message.channel === this.channelName)
 			this.emit('message', <received>message.message);
 	}
@@ -57,10 +55,10 @@ export class Multiplex<
 
 export namespace Multiplex {
 	export interface Message<
-		channelName extends string,
+		// channelName extends string,
 		message,
 	> {
-		readonly channel: channelName;
+		readonly channel: string;
 		readonly message: message;
 	}
 

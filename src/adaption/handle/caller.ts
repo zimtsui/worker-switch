@@ -16,7 +16,7 @@ export class Handle<handlePicked extends {}> {
 	public constructor(
 		private cp: ChildProcess,
 		// 从语义上说，socket 并非多态，因为他并不是「只能传送某一不确定类型」，而是「可以传送各种类型」，因此不用 `any` 而用 `unknown`。
-		socket: Multiplex.Like<Multiplex.Message<string, unknown>>,
+		socket: Multiplex.Like<Multiplex.Message<unknown>>,
 		private channelName: string,
 	) {
 		this.channel = new Multiplex(socket, this.channelName);
@@ -31,7 +31,7 @@ export class Handle<handlePicked extends {}> {
 	): Promise<GetResult<handlePicked, methodName>> {
 
 		const id = Id.create();
-		const req: Multiplex.Message<string, Req<string, readonly any[]>> = {
+		const req: Multiplex.Message<Req<string, readonly any[]>> = {
 			channel: this.channelName,
 			message: {
 				jsonrpc: '2.0',

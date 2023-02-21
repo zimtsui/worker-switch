@@ -9,8 +9,8 @@ export function bind<handlePicked extends {}>(
 	service: handlePicked,
 ) {
 	const socket = new ParentProcessSocket(process);
-	const channel = new Multiplex<string, Res<any>, never>(socket, channelName);
-	process.on('message', (message: Multiplex.Message<any, any>, handle) => {
+	const channel = new Multiplex<Res<any>, never>(socket, channelName);
+	process.on('message', (message: Multiplex.Message<any>, handle) => {
 		if (message.channel === channelName) {
 			__ASSERT<Req<string, any>>(message.message);
 			const method = Reflect.get(service, message.message.method, service);

@@ -9,10 +9,10 @@ export type GetMethod<
 
 export type GetParams<
 	T extends {},
-	methodName extends GetMethodName<T>,
+	methodName extends GetMethodName<T> = GetMethodName<T>,
 > = Parameters<GetMethod<T, methodName>>;
 
 export type GetResult<
 	T extends {},
-	methodName extends GetMethodName<T>,
+	methodName extends GetMethodName<T> = GetMethodName<T>,
 > = ReturnType<GetMethod<T, methodName>>;
