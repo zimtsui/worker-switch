@@ -1,6 +1,6 @@
-import assert = require("assert");
+import assert from "assert";
 import { Serializable } from "child_process";
-import EventEmitter = require("events");
+import EventEmitter from "events";
 import { Multiplex } from "./multiplex";
 
 

@@ -1,5 +1,4 @@
-import assert = require("assert");
-import EventEmitter = require("events");
+import EventEmitter from "events";
 // import { ReadyState, StateError } from "startable";
 
 

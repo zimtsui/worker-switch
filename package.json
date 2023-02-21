@@ -2,8 +2,9 @@
   "name": "workerouter",
   "version": "0.0.1",
   "engines": {
-    "node": ">=16"
+    "node": "=18"
   },
+  "type": "module",
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,9 +14,13 @@
   },
   "author": "Zim",
   "dependencies": {
+    "@koa/router": "^12.0.0",
+    "@types/koa": "^2.13.5",
+    "@types/koa__router": "^12.0.0",
     "@types/node": "^16.18.12",
     "@types/uuid": "^9.0.0",
     "@zimtsui/json-rpc": "github:zimtsui/json-rpc",
+    "koa": "^2.14.1",
     "startable": "github:zimtsui/startable",
     "uuid": "^9.0.0"
   }

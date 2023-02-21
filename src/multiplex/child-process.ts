@@ -1,8 +1,6 @@
 import { ChildProcess, Serializable } from "child_process";
-import EventEmitter = require("events");
+import EventEmitter from "events";
 import { Multiplex } from "./multiplex";
-// import { ReadyState, StateError } from "startable";
-import assert = require("assert");
 
 
 export class ObjectSocket<
