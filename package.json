@@ -1,0 +1,22 @@
+{
+  "name": "workerouter",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=16"
+  },
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b ./src/tsconfig.json",
+    "clean": "rm -rf ./build",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "author": "Zim",
+  "dependencies": {
+    "@types/node": "^16.18.12",
+    "@types/uuid": "^9.0.0",
+    "@zimtsui/json-rpc": "github:zimtsui/json-rpc",
+    "startable": "github:zimtsui/startable",
+    "uuid": "^9.0.0"
+  }
+}

@@ -4,17 +4,16 @@ import EventEmitter = require("events");
 
 
 export class Multiplex<
-	channel extends string,
+	channelName extends string,
 	sent,
 	received = sent,
 > extends EventEmitter implements Multiplex.Like<sent, received> {
 	// private readyState = ReadyState.STARTED;
 	public constructor(
-		protected socket: Multiplex.Like<
-			Multiplex.Message<channel>,
-			Multiplex.Message<channel>
+		private socket: Multiplex.Like<
+			Multiplex.Message<string, any>
 		>,
-		protected channel: channel,
+		private channelName: channelName,
 	) {
 		super();
 		this.socket.on('message', this.onMessage);
@@ -23,8 +22,8 @@ export class Multiplex<
 
 	}
 
-	private onMessage = (message: Multiplex.Message<channel>) => {
-		if (message.channel === this.channel)
+	private onMessage = (message: Multiplex.Message<channelName, received>) => {
+		if (message.channel === this.channelName)
 			this.emit('message', <received>message.message);
 	}
 	private onError = (err: Error) => void this.emit('error', err);
@@ -50,7 +49,7 @@ export class Multiplex<
 		// 	),
 		// );
 		this.socket.send({
-			channel: this.channel,
+			channel: this.channelName,
 			message: channelMessage,
 		});
 	}
@@ -58,10 +57,11 @@ export class Multiplex<
 
 export namespace Multiplex {
 	export interface Message<
-		channel extends string
+		channelName extends string,
+		message,
 	> {
-		readonly channel: channel;
-		readonly message: any;
+		readonly channel: channelName;
+		readonly message: message;
 	}
 
 	export interface Like<sent, received = sent> extends EventEmitter {
@@ -71,7 +71,7 @@ export namespace Multiplex {
 		emit<Event extends keyof Like.Events<received>>(event: Event, ...params: Parameters<Like.Events<received>[Event]>): boolean;
 
 		/**
-		 * Calling during the non-STARTED stage causes an undefined consequence.
+		 * Calling after 'close' event causes an undefined consequence.
 		 */
 		send(message: sent): void;
 		close(): void;
