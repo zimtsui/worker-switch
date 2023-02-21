@@ -10,7 +10,7 @@ import { GetParams, GetResult } from "../type-functions.js";
 /**
  * 这只是一个 wrapper 不维护状态，由使用者来确保使用时内部资源处于正常状态。
  */
-export class Handle<handlePicked extends {}> {
+export class Handle<aboutHandle extends {}> {
 	private channel: Multiplex.Like<never, Res<any>>;
 	public constructor(
 		private cp: ChildProcess,
@@ -22,12 +22,12 @@ export class Handle<handlePicked extends {}> {
 	}
 
 	public sendHandle<
-		methodName extends string & keyof handlePicked,
+		methodName extends string & keyof aboutHandle,
 	>(
 		methodName: methodName,
-		params: GetParams<handlePicked, methodName>,
+		params: GetParams<aboutHandle, methodName>,
 		handle: Server,
-	): Promise<GetResult<handlePicked, methodName>> {
+	): Promise<GetResult<aboutHandle, methodName>> {
 
 		const id = Id.create();
 		const req: Multiplex.Message<Req<string, readonly any[]>> = {
@@ -42,7 +42,7 @@ export class Handle<handlePicked extends {}> {
 		this.cp.send(req, handle);
 		return new Promise((resolve, reject) => {
 			const messageListener = (
-				res: Res.Succ<GetResult<handlePicked, methodName>> | Res.Fail,
+				res: Res.Succ<GetResult<aboutHandle, methodName>> | Res.Fail,
 			) => {
 				if (res.id === id) {
 					if (typeof res.result !== 'undefined')

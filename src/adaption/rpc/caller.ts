@@ -7,22 +7,22 @@ import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 /**
  * 这只是一个 wrapper 不维护状态，由使用者来确保使用时内部资源处于正常状态。
  */
-export class Rpc<rpcPicked extends {}> {
+export class Rpc<aboutRpc extends {}> {
 	public constructor(
 		private channel: Multiplex.Like<
-			Req<GetMethodName<rpcPicked>, readonly any[]>,
+			Req<GetMethodName<aboutRpc>, readonly any[]>,
 			Res<any>
 		>,
 	) { }
 
 	public call<
-		methodName extends GetMethodName<rpcPicked>,
+		methodName extends GetMethodName<aboutRpc>,
 	>(
 		methodName: methodName,
-		params: GetParams<rpcPicked, methodName>,
-	): Promise<GetResult<rpcPicked, methodName>> {
+		params: GetParams<aboutRpc, methodName>,
+	): Promise<GetResult<aboutRpc, methodName>> {
 		const id = Id.create();
-		const req: Req<methodName, GetParams<rpcPicked, methodName>> = {
+		const req: Req<methodName, GetParams<aboutRpc, methodName>> = {
 			jsonrpc: '2.0',
 			id,
 			method: methodName,
@@ -32,7 +32,7 @@ export class Rpc<rpcPicked extends {}> {
 
 		return new Promise((resolve, reject) => {
 			const messageListener = (
-				res: Res.Succ<GetResult<rpcPicked, methodName>> | Res.Fail,
+				res: Res.Succ<GetResult<aboutRpc, methodName>> | Res.Fail,
 			) => {
 				if (res.id === id) {
 					if (typeof res.result !== 'undefined')

@@ -1,2 +1,2 @@
 import { Startable } from "startable";
-export declare function adapt<rpcPicked extends {}, handlePicked extends {}>(rpcPicked: rpcPicked, handlePicked: handlePicked, startable: Startable): void;
+export declare function adapt<aboutRpc extends {}, aboutHandle extends {}>(aboutRpc: aboutRpc, aboutHandle: aboutHandle, startable: Startable): void;

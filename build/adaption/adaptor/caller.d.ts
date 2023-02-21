@@ -1,6 +1,6 @@
 import { Startable } from "startable";
 import { GetMethodName } from "../type-functions.js";
-export type GetProxy<rpcPicked extends {}, handlePicked extends {}, startableMethodName extends string> = rpcPicked & handlePicked & Omit<{
-    [name in startableMethodName]: Startable;
-}, GetMethodName<rpcPicked> | GetMethodName<handlePicked>>;
-export declare function create<rpcPicked extends {}, handlePicked extends {}, startableMethodName extends string>(filePath: string, sendHandleMethodsNames: readonly GetMethodName<handlePicked>[] | undefined, startableMethodName: startableMethodName): GetProxy<rpcPicked, handlePicked, startableMethodName>;
+export type GetProxy<aboutRpc extends {}, aboutHandle extends {}, startableName extends string> = aboutRpc & aboutHandle & Omit<{
+    [name in startableName]: Startable;
+}, GetMethodName<aboutRpc> | GetMethodName<aboutHandle>>;
+export declare function create<aboutRpc extends {}, aboutHandle extends {}, startableName extends string>(filePath: string, methodsNamesAboutHandle: readonly GetMethodName<aboutHandle>[] | undefined, startableMethodName: startableName): GetProxy<aboutRpc, aboutHandle, startableName>;

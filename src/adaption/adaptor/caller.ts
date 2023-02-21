@@ -10,21 +10,21 @@ import { GetMethodName } from "../type-functions.js";
 
 
 export type GetProxy<
-	rpcPicked extends {},
-	handlePicked extends {},
-	startableMethodName extends string,
-> = rpcPicked &
-	handlePicked &
+	aboutRpc extends {},
+	aboutHandle extends {},
+	startableName extends string,
+> = aboutRpc &
+	aboutHandle &
 	Omit<
 		{
-			[name in startableMethodName]: Startable;
+			[name in startableName]: Startable;
 		},
-		GetMethodName<rpcPicked> | GetMethodName<handlePicked>
+		GetMethodName<aboutRpc> | GetMethodName<aboutHandle>
 	>;
 
 class Adaptor<
-	rpcPicked extends {},
-	handlePicked extends {},
+	aboutRpc extends {},
+	aboutHandle extends {},
 > {
 	public $s = createStartable(
 		this.rawStart.bind(this),
@@ -33,8 +33,8 @@ class Adaptor<
 	public cp?: ChildProcess;
 	public socket?: Multiplex.Like<Multiplex.Message<unknown>>;
 	public control?: Control;
-	public rpc?: Rpc<rpcPicked>;
-	public handle?: Handle<handlePicked>;
+	public aboutRpc?: Rpc<aboutRpc>;
+	public aboutHandle?: Handle<aboutHandle>;
 
 	public constructor(
 		public filePath: string,
@@ -48,10 +48,10 @@ class Adaptor<
 			new Multiplex(this.socket, 'control'),
 		);
 		await this.control.$s.start(this.$s.stop);
-		this.rpc = new Rpc(
+		this.aboutRpc = new Rpc(
 			new Multiplex(this.socket, 'rpc'),
 		);
-		this.handle = new Handle(
+		this.aboutHandle = new Handle(
 			this.cp,
 			this.socket,
 			'handle',
@@ -64,21 +64,21 @@ class Adaptor<
 }
 
 export function create<
-	rpcPicked extends {},
-	handlePicked extends {},
-	startableMethodName extends string,
+	aboutRpc extends {},
+	aboutHandle extends {},
+	startableName extends string,
 >(
 	filePath: string,
-	sendHandleMethodsNames: readonly GetMethodName<handlePicked>[] = [],
-	startableMethodName: startableMethodName,
-): GetProxy<rpcPicked, handlePicked, startableMethodName> {
+	methodsNamesAboutHandle: readonly GetMethodName<aboutHandle>[] = [],
+	startableMethodName: startableName,
+): GetProxy<aboutRpc, aboutHandle, startableName> {
 	return <any>new Proxy<any>(
 		new Adaptor(filePath),
 		{
 			get(target, field: any): any {
 				if (field === startableMethodName) {
 					return target.$s;
-				} else if ((sendHandleMethodsNames).includes(field)) {
+				} else if ((methodsNamesAboutHandle).includes(field)) {
 					return (handle: Server, ...args: any[]) => {
 						target.$s.assertState();
 						return target.handle.sendHandle(

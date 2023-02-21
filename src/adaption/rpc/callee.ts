@@ -5,12 +5,12 @@ import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 
 
 
-export function bind<rpcPicked extends {}>(
+export function bind<aboutRpc extends {}>(
 	channel: Multiplex<
-		Res<GetResult<rpcPicked>>,
-		Req<GetMethodName<rpcPicked>, GetParams<rpcPicked>>
+		Res<GetResult<aboutRpc>>,
+		Req<GetMethodName<aboutRpc>, GetParams<aboutRpc>>
 	>,
-	service: rpcPicked,
+	service: aboutRpc,
 ) {
 	channel.on('message', (message: Req<any, any>) => {
 		const method = (

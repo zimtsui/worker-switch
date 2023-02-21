@@ -10,8 +10,8 @@ class Adaptor {
     cp;
     socket;
     control;
-    rpc;
-    handle;
+    aboutRpc;
+    aboutHandle;
     constructor(filePath) {
         this.filePath = filePath;
     }
@@ -20,20 +20,20 @@ class Adaptor {
         this.socket = new ChildProcessSocket(this.cp);
         this.control = new Control(this.cp, new Multiplex(this.socket, 'control'));
         await this.control.$s.start(this.$s.stop);
-        this.rpc = new Rpc(new Multiplex(this.socket, 'rpc'));
-        this.handle = new Handle(this.cp, this.socket, 'handle');
+        this.aboutRpc = new Rpc(new Multiplex(this.socket, 'rpc'));
+        this.aboutHandle = new Handle(this.cp, this.socket, 'handle');
     }
     async rawStop() {
         await this.control?.$s.stop();
     }
 }
-export function create(filePath, sendHandleMethodsNames = [], startableMethodName) {
+export function create(filePath, methodsNamesAboutHandle = [], startableMethodName) {
     return new Proxy(new Adaptor(filePath), {
         get(target, field) {
             if (field === startableMethodName) {
                 return target.$s;
             }
-            else if ((sendHandleMethodsNames).includes(field)) {
+            else if ((methodsNamesAboutHandle).includes(field)) {
                 return (handle, ...args) => {
                     target.$s.assertState();
                     return target.handle.sendHandle(field, args, handle);

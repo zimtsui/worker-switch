@@ -3,9 +3,9 @@ import { Multiplex, ParentProcess as ParentProcessSocket } from "../../multiplex
 import { __ASSERT } from "../../meta.js";
 
 
-export function bind<handlePicked extends {}>(
+export function bind<aboutHandle extends {}>(
 	channelName: string,
-	service: handlePicked,
+	service: aboutHandle,
 ) {
 	const socket = new ParentProcessSocket(process);
 	const channel = new Multiplex<Res<any>, never>(socket, channelName);

@@ -7,20 +7,20 @@ import { Req, Res } from "../interfaces/json-rpc.js";
 import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 
 export function adapt<
-	rpcPicked extends {},
-	handlePicked extends {},
+	aboutRpc extends {},
+	aboutHandle extends {},
 >(
-	rpcPicked: rpcPicked,
-	handlePicked: handlePicked,
+	aboutRpc: aboutRpc,
+	aboutHandle: aboutHandle,
 	startable: Startable,
 ) {
 	const socket = new ParentProcessSocket(process);
 	const controlChannel = new Multiplex(socket, 'control');
 	Control.bind(controlChannel, startable);
-	Handle.bind('handle', handlePicked);
+	Handle.bind('handle', aboutHandle);
 	const rpcChannel = new Multiplex<
-		Res<GetResult<rpcPicked>>,
-		Req<GetMethodName<rpcPicked>, GetParams<rpcPicked>>
+		Res<GetResult<aboutRpc>>,
+		Req<GetMethodName<aboutRpc>, GetParams<aboutRpc>>
 	>(socket, 'rpc');
-	Rpc.bind(rpcChannel, rpcPicked);
+	Rpc.bind(rpcChannel, aboutRpc);
 }
