@@ -1,6 +1,6 @@
 import { Startable } from "startable";
-import { Multiplex } from "../../multiplex";
-import { Res } from "../interfaces/json-rpc";
+import { Multiplex } from "../../multiplex/index.js";
+import { Res } from "../interfaces/json-rpc.js";
 
 
 export function bind(

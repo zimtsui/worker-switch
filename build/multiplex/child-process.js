@@ -1,22 +1,17 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.ObjectSocket = void 0;
-const events_1 = __importDefault(require("events"));
-class ObjectSocket extends events_1.default {
+import EventEmitter from "events";
+export class ObjectSocket extends EventEmitter {
+    cp;
     // private readyState = ReadyState.STARTED;
     constructor(cp) {
         super();
         this.cp = cp;
-        this.onMessage = (message) => void this.emit('message', message);
-        this.onError = (err) => void this.emit('error', err);
-        this.onExit = () => void this.close();
         this.cp.on('message', this.onMessage);
         this.cp.on('error', this.onError);
         this.cp.on('exit', this.onExit);
     }
+    onMessage = (message) => void this.emit('message', message);
+    onError = (err) => void this.emit('error', err);
+    onExit = () => void this.close();
     send(message) {
         // assert(
         // 	this.readyState === ReadyState.STARTED,
@@ -38,5 +33,4 @@ class ObjectSocket extends events_1.default {
         this.emit('close');
     }
 }
-exports.ObjectSocket = ObjectSocket;
 //# sourceMappingURL=child-process.js.map

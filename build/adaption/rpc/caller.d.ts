@@ -1,6 +1,6 @@
-import { Multiplex } from "../../multiplex";
-import { Req, Res } from "../interfaces/json-rpc";
-import { GetMethodName, GetParams, GetResult } from "../type-functions";
+import { Multiplex } from "../../multiplex/index.js";
+import { Req, Res } from "../interfaces/json-rpc.js";
+import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 /**
  * 这只是一个 wrapper 不维护状态，由使用者来确保使用时内部资源处于正常状态。
  */

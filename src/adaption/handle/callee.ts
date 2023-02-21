@@ -1,7 +1,6 @@
-import { Multiplex } from "../../multiplex";
-import { Req, Res } from "../interfaces/json-rpc";
-import { ParentProcess as ParentProcessSocket } from "../../multiplex";
-import { __ASSERT } from "../../meta";
+import { Req, Res } from "../interfaces/json-rpc.js";
+import { Multiplex, ParentProcess as ParentProcessSocket } from "../../multiplex/index.js";
+import { __ASSERT } from "../../meta.js";
 
 
 export function bind<handlePicked extends {}>(

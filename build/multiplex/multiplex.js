@@ -1,27 +1,23 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Multiplex = void 0;
-const events_1 = __importDefault(require("events"));
+import EventEmitter from "events";
 // import { ReadyState, StateError } from "startable";
-class Multiplex extends events_1.default {
+export class Multiplex extends EventEmitter {
+    socket;
+    channelName;
     // private readyState = ReadyState.STARTED;
     constructor(socket, channelName) {
         super();
         this.socket = socket;
         this.channelName = channelName;
-        this.onMessage = (message) => {
-            if (message.channel === this.channelName)
-                this.emit('message', message.message);
-        };
-        this.onError = (err) => void this.emit('error', err);
-        this.onClose = () => void this.close();
         this.socket.on('message', this.onMessage);
         this.socket.on('error', this.onError);
         this.socket.on('close', this.onClose);
     }
+    onMessage = (message) => {
+        if (message.channel === this.channelName)
+            this.emit('message', message.message);
+    };
+    onError = (err) => void this.emit('error', err);
+    onClose = () => void this.close();
     /**
      * The underlying socket is aggregated rather than composited, and will not be closed.
      */
@@ -46,5 +42,4 @@ class Multiplex extends events_1.default {
         });
     }
 }
-exports.Multiplex = Multiplex;
 //# sourceMappingURL=multiplex.js.map

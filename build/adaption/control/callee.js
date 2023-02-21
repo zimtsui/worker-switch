@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.bind = void 0;
-const json_rpc_1 = require("../interfaces/json-rpc");
-function bind(channel, startable) {
+import { Res } from "../interfaces/json-rpc.js";
+export function bind(channel, startable) {
     const onSignal = () => startable.stop();
     process.on('SIGTERM', onSignal);
     process.on('SIGINT', onSignal);
@@ -11,7 +8,7 @@ function bind(channel, startable) {
             channel.send({
                 id: '',
                 jsonrpc: '2.0',
-                error: json_rpc_1.Res.Fail.Error.from(err),
+                error: Res.Fail.Error.from(err),
             });
         else
             channel.send({
@@ -26,9 +23,8 @@ function bind(channel, startable) {
         }), (err) => void channel.send({
             id: '',
             jsonrpc: '2.0',
-            error: json_rpc_1.Res.Fail.Error.from(err),
+            error: Res.Fail.Error.from(err),
         }));
     });
 }
-exports.bind = bind;
 //# sourceMappingURL=callee.js.map

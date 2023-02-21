@@ -1,7 +1,7 @@
-import { Multiplex } from "../../multiplex";
-import { Id, Req, Res } from "../interfaces/json-rpc";
-import { RemoteError } from "../interfaces/remote-error";
-import { GetMethodName, GetParams, GetResult } from "../type-functions";
+import { Multiplex } from "../../multiplex/index.js";
+import { Id, Req, Res } from "../interfaces/json-rpc.js";
+import { RemoteError } from "../interfaces/remote-error.js";
+import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 
 
 /**

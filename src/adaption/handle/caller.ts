@@ -1,11 +1,10 @@
 import assert from "assert";
 import { ChildProcess } from "child_process";
 import { Server } from "http";
-import { Multiplex } from "../../multiplex";
-// import { Control } from "../control/caller";
-import { Id, Req, Res } from "../interfaces/json-rpc";
-import { RemoteError } from "../interfaces/remote-error";
-import { GetParams, GetResult } from "../type-functions";
+import { Multiplex } from "../../multiplex/index.js";
+import { Id, Req, Res } from "../interfaces/json-rpc.js";
+import { RemoteError } from "../interfaces/remote-error.js";
+import { GetParams, GetResult } from "../type-functions.js";
 
 
 /**

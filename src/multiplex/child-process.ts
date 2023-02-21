@@ -1,6 +1,6 @@
 import { ChildProcess, Serializable } from "child_process";
 import EventEmitter from "events";
-import { Multiplex } from "./multiplex";
+import { Multiplex } from "./multiplex.js";
 
 
 export class ObjectSocket<

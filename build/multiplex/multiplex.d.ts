@@ -1,4 +1,4 @@
-/// <reference types="node" />
+/// <reference types="node" resolution-mode="require"/>
 import EventEmitter from "events";
 export declare class Multiplex<sent, received = sent> extends EventEmitter implements Multiplex.Like<sent, received> {
     private socket;

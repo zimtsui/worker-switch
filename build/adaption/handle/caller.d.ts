@@ -1,9 +1,9 @@
-/// <reference types="node" />
-/// <reference types="node" />
+/// <reference types="node" resolution-mode="require"/>
+/// <reference types="node" resolution-mode="require"/>
 import { ChildProcess } from "child_process";
 import { Server } from "http";
-import { Multiplex } from "../../multiplex";
-import { GetParams, GetResult } from "../type-functions";
+import { Multiplex } from "../../multiplex/index.js";
+import { GetParams, GetResult } from "../type-functions.js";
 /**
  * 这只是一个 wrapper 不维护状态，由使用者来确保使用时内部资源处于正常状态。
  */

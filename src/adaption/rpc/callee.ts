@@ -1,7 +1,7 @@
-import { __ASSERT } from "../../meta";
-import { Multiplex } from "../../multiplex";
-import { Req, Res } from "../interfaces/json-rpc";
-import { GetMethodName, GetParams, GetResult } from "../type-functions";
+import { __ASSERT } from "../../meta.js";
+import { Multiplex } from "../../multiplex/index.js";
+import { Req, Res } from "../interfaces/json-rpc.js";
+import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 
 
 

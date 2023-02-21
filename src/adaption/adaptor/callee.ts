@@ -1,10 +1,10 @@
 import { Startable } from "startable";
-import * as Rpc from '../rpc/callee';
-import * as Handle from '../handle/callee';
-import * as Control from '../control/callee';
-import { Multiplex, ParentProcess as ParentProcessSocket } from "../../multiplex";
-import { Req, Res } from "../interfaces/json-rpc";
-import { GetMethodName, GetParams, GetResult } from "../type-functions";
+import * as Rpc from '../rpc/callee.js';
+import * as Handle from '../handle/callee.js';
+import * as Control from '../control/callee.js';
+import { Multiplex, ParentProcess as ParentProcessSocket } from "../../multiplex/index.js";
+import { Req, Res } from "../interfaces/json-rpc.js";
+import { GetMethodName, GetParams, GetResult } from "../type-functions.js";
 
 export function adapt<
 	rpcPicked extends {},

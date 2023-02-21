@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RemoteError = void 0;
-class RemoteError extends Error {
+export class RemoteError extends Error {
+    code;
     constructor(error) {
         super(error.message);
         this.name = error.data.name;
@@ -9,5 +7,4 @@ class RemoteError extends Error {
         this.stack = error.data.stack;
     }
 }
-exports.RemoteError = RemoteError;
 //# sourceMappingURL=remote-error.js.map

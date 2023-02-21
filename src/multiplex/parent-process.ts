@@ -1,7 +1,7 @@
 import assert from "assert";
 import { Serializable } from "child_process";
 import EventEmitter from "events";
-import { Multiplex } from "./multiplex";
+import { Multiplex } from "./multiplex.js";
 
 
 

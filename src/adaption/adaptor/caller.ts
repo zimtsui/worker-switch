@@ -1,12 +1,11 @@
 import { ChildProcess, fork } from "child_process";
 import { Server } from "http";
 import { createStartable, Startable } from "startable";
-import { Multiplex } from "../../multiplex";
-import { ChildProcess as ChildProcessSocket } from "../../multiplex";
-import { Control } from "../control/caller";
-import { Handle } from "../handle/caller";
-import { Rpc } from "../rpc/caller";
-import { GetMethodName } from "../type-functions";
+import { ChildProcess as ChildProcessSocket, Multiplex } from "../../multiplex/index.js";
+import { Control } from "../control/caller.js";
+import { Handle } from "../handle/caller.js";
+import { Rpc } from "../rpc/caller.js";
+import { GetMethodName } from "../type-functions.js";
 
 
 

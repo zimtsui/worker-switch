@@ -10,14 +10,15 @@ export class Runtime {
 		this.rawStop.bind(this),
 	);
 
-	private mods = new Map<string, CloudFunction>();
+	private fs = new Map<string, CloudFunction>();
 
 	public constructor(
 		private specifiers: string[],
 	) { }
 
 	public getFun(name: string): CloudFunction {
-		const f = this.mods.get(name)!;
+		assert(this.fs.has(name));
+		const f = this.fs.get(name)!;
 		return f;
 	}
 
@@ -25,9 +26,10 @@ export class Runtime {
 		await Promise.all(
 			this.specifiers.map(async specifier => {
 				const mod = await import(specifier);
+				console.log(mod);
 				const f = mod?.default;
 				assert(typeof f === 'function');
-				this.mods.set(specifier, <CloudFunction>f);
+				this.fs.set(specifier, <CloudFunction>f);
 			}),
 		);
 	}

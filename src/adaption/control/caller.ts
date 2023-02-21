@@ -2,9 +2,9 @@ import assert from "assert";
 import { ChildProcess } from "child_process";
 import { once } from "events";
 import { createStartable } from "startable";
-import { Multiplex } from "../../multiplex";
-import { Res } from "../interfaces/json-rpc";
-import { RemoteError } from "../interfaces/remote-error";
+import { Multiplex } from "../../multiplex/index.js";
+import { Res } from "../interfaces/json-rpc.js";
+import { RemoteError } from "../interfaces/remote-error.js";
 
 
 

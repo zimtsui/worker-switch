@@ -1,17 +1,15 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Rpc = void 0;
-const json_rpc_1 = require("../interfaces/json-rpc");
-const remote_error_1 = require("../interfaces/remote-error");
+import { Id } from "../interfaces/json-rpc.js";
+import { RemoteError } from "../interfaces/remote-error.js";
 /**
  * 这只是一个 wrapper 不维护状态，由使用者来确保使用时内部资源处于正常状态。
  */
-class Rpc {
+export class Rpc {
+    channel;
     constructor(channel) {
         this.channel = channel;
     }
     call(methodName, params) {
-        const id = json_rpc_1.Id.create();
+        const id = Id.create();
         const req = {
             jsonrpc: '2.0',
             id,
@@ -25,7 +23,7 @@ class Rpc {
                     if (typeof res.result !== 'undefined')
                         resolve(res.result);
                     else
-                        reject(new remote_error_1.RemoteError(res.error));
+                        reject(new RemoteError(res.error));
                     this.channel.off('message', messageListener);
                     this.channel.off('error', errorListener);
                     this.channel.off('close', closeListener);
@@ -49,10 +47,9 @@ class Rpc {
         });
     }
 }
-exports.Rpc = Rpc;
 (function (Rpc) {
     class InternalChannelClosed extends Error {
     }
     Rpc.InternalChannelClosed = InternalChannelClosed;
-})(Rpc = exports.Rpc || (exports.Rpc = {}));
+})(Rpc = Rpc || (Rpc = {}));
 //# sourceMappingURL=caller.js.map

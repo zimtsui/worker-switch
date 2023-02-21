@@ -1,8 +1,8 @@
-/// <reference types="node" />
-/// <reference types="node" />
+/// <reference types="node" resolution-mode="require"/>
+/// <reference types="node" resolution-mode="require"/>
 import { ChildProcess } from "child_process";
-import { Multiplex } from "../../multiplex";
-import { Res } from "../interfaces/json-rpc";
+import { Multiplex } from "../../multiplex/index.js";
+import { Res } from "../interfaces/json-rpc.js";
 export declare class Control {
     private cp;
     private channel;

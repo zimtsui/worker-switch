@@ -1,4 +1,4 @@
-import { Res } from "./json-rpc";
+import { Res } from "./json-rpc.js";
 
 export class RemoteError extends Error {
 	public code: number;
