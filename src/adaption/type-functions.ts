@@ -15,4 +15,4 @@ export type GetParams<
 export type GetResult<
 	T extends {},
 	methodName extends GetMethodName<T> = GetMethodName<T>,
-> = ReturnType<GetMethod<T, methodName>>;
+> = Awaited<ReturnType<GetMethod<T, methodName>>>;

@@ -1,7 +1,7 @@
+import { $, AsRawStart, AsRawStop } from "@zimtsui/startable";
 import assert from "assert";
 import { ChildProcess } from "child_process";
 import { once } from "events";
-import { createStartable } from "startable";
 import { Multiplex } from "../../multiplex/index.js";
 import { Res } from "../interfaces/json-rpc.js";
 import { RemoteError } from "../interfaces/remote-error.js";
@@ -9,11 +9,6 @@ import { RemoteError } from "../interfaces/remote-error.js";
 
 
 export class Control {
-	public $s = createStartable(
-		this.rawStart.bind(this),
-		this.rawStop.bind(this),
-	);
-
 	public constructor(
 		private cp: ChildProcess,
 		private channel: Multiplex.Like<never, Res<null>>,
@@ -36,17 +31,19 @@ export class Control {
 		]).finally(() => void ac.abort());
 	}
 
+	@AsRawStart()
 	private async rawStart() {
 		try {
 			await this.getMessage();
 		} finally {
 			this.getMessage().then(
-				() => void this.$s.stop(),
-				err => void this.$s.stop(err),
+				() => void $(this).stop(),
+				err => void $(this).stop(err),
 			);
 		}
 	}
 
+	@AsRawStop()
 	private async rawStop() {
 		if (this.cp.exitCode === null) {
 			assert(this.cp.kill('SIGTERM'));

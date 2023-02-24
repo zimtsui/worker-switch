@@ -1,6 +1,6 @@
 import { ChildProcess, fork } from "child_process";
 import { Server } from "http";
-import { createStartable, Startable } from "startable";
+import { $, AsRawStart, AsRawStop, Startable } from "@zimtsui/startable";
 import { ChildProcess as ChildProcessSocket, Multiplex } from "../../multiplex/index.js";
 import { Control } from "../control/caller.js";
 import { Handle } from "../handle/caller.js";
@@ -26,10 +26,6 @@ class Adaptor<
 	aboutRpc extends {},
 	aboutHandle extends {},
 > {
-	public $s = createStartable(
-		this.rawStart.bind(this),
-		this.rawStop.bind(this),
-	);
 	public cp?: ChildProcess;
 	public socket?: Multiplex.Like<Multiplex.Message<unknown>>;
 	public control?: Control;
@@ -40,6 +36,7 @@ class Adaptor<
 		public filePath: string,
 	) { }
 
+	@AsRawStart()
 	private async rawStart() {
 		this.cp = fork(this.filePath); // TODO 文档参数
 		this.socket = new ChildProcessSocket(this.cp);
@@ -47,7 +44,7 @@ class Adaptor<
 			this.cp,
 			new Multiplex(this.socket, 'control'),
 		);
-		await this.control.$s.start(this.$s.stop);
+		await $(this.control).start($(this).stop);
 		this.aboutRpc = new Rpc(
 			new Multiplex(this.socket, 'rpc'),
 		);
@@ -58,8 +55,10 @@ class Adaptor<
 		);
 	}
 
+	@AsRawStop()
 	private async rawStop() {
-		await this.control?.$s.stop();
+		if (this.control)
+			await $(this.control).stop();
 	}
 }
 

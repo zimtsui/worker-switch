@@ -1,4 +1,4 @@
-import { Startable } from "startable";
+import { Startable } from "@zimtsui/startable";
 import { Multiplex } from "../../multiplex/index.js";
 import { Res } from "../interfaces/json-rpc.js";
 

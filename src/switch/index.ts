@@ -1,13 +1,9 @@
+import { $, AsRawStart, AsRawStop } from "@zimtsui/startable";
 import { Server } from "http";
-import { createStartable } from "startable";
 import { ServiceProxy } from "../worker/intrefaces.js";
 import { WorkerPool } from "./pool.js";
 
 export class Switch {
-	public $s = createStartable(
-		this.rawStart.bind(this),
-		this.rawStop.bind(this),
-	);
 	private pool: WorkerPool;
 	private worker?: ServiceProxy;
 
@@ -26,13 +22,15 @@ export class Switch {
 		this.worker = newWorker;
 	}
 
+	@AsRawStart()
 	private async rawStart() {
-		await this.pool.$s.start(this.$s.stop);
+		await $(this.pool).start($(this).stop);
 		this.worker = await this.pool.pop();
 	}
 
+	@AsRawStop()
 	private async rawStop() {
-		if (this.worker) this.worker.$s.stop();
-		this.pool.$s.stop();
+		if (this.worker) $(this.worker).stop();
+		$(this.pool).stop();
 	}
 }

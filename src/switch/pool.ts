@@ -1,44 +1,39 @@
 import { AboutHandle, AboutRpc, ServiceProxy, StartableName } from "../worker/intrefaces.js";
-import { Mutex } from '@zimtsui/coroutine-locks';
+import { Semque } from '@zimtsui/coroutine-locks';
 import * as Adaptor from "../adaption/adaptor/caller.js";
-import { createStartable } from "startable";
+import { AsRawStart, AsRawStop } from "@zimtsui/startable";
+
 
 export class WorkerPool {
-	public $s = createStartable(
-		this.rawStart.bind(this),
-		this.rawStop.bind(this),
-	);
-
-	private mutex = new Mutex(true);
-	private buffer?: ServiceProxy;
+	private mutex = new Semque<ServiceProxy>([], 1);
 	public constructor(
 		private filePath: string,
 	) { }
 
 	public async pop(): Promise<ServiceProxy> {
-		await this.mutex.lock();
-		const proxy = this.buffer!;
+		const proxy = await this.mutex.pop();
 		this.refill();
 		return proxy;
 	}
 
 	private async refill() {
-		this.buffer = Adaptor.create<AboutRpc, AboutHandle, StartableName>(
+		const proxy = Adaptor.create<AboutRpc, AboutHandle, StartableName>(
 			this.filePath,
 			['accept'],
 			'$s',
 		);
-		await this.buffer.$s.start();
-		this.mutex.unlock();
+		await proxy.$s.start();
+		this.mutex.push(proxy);
 	}
 
+	@AsRawStart()
 	private async rawStart() {
 		await this.refill();
 	}
 
+	@AsRawStop()
 	private async rawStop() {
-		await this.mutex.lock();
-		const proxy = this.buffer!;
+		const proxy = await this.mutex.pop();
 		await proxy.$s.stop();
 	}
 }
