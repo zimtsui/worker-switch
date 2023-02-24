@@ -1,26 +1,20 @@
 import { ChildProcess, fork } from "child_process";
-import { Server } from "http";
 import { $, AsRawStart, AsRawStop, Startable } from "@zimtsui/startable";
 import { ChildProcess as ChildProcessSocket, Multiplex } from "../../multiplex/index.js";
 import { Control } from "../control/caller.js";
 import { Handle } from "../handle/caller.js";
 import { Rpc } from "../rpc/caller.js";
 import { GetMethodName } from "../type-functions.js";
+import { Inquiry } from "../inquiry/caller.js";
+import { MethodType } from "../inquiry/method-types.js";
 
 
 
 export type GetProxy<
 	aboutRpc extends {},
 	aboutHandle extends {},
-	startableName extends string,
 > = aboutRpc &
-	aboutHandle &
-	Omit<
-		{
-			[name in startableName]: Startable;
-		},
-		GetMethodName<aboutRpc> | GetMethodName<aboutHandle>
-	>;
+	aboutHandle;
 
 class Adaptor<
 	aboutRpc extends {},
@@ -29,6 +23,7 @@ class Adaptor<
 	public cp?: ChildProcess;
 	public socket?: Multiplex.Like<Multiplex.Message<unknown>>;
 	public control?: Control;
+	public inquiry?: Inquiry<aboutRpc & aboutHandle>;
 	public aboutRpc?: Rpc<aboutRpc>;
 	public aboutHandle?: Handle<aboutHandle>;
 
@@ -53,6 +48,9 @@ class Adaptor<
 			this.socket,
 			'handle',
 		);
+		this.inquiry = new Inquiry(
+			new Multiplex(this.socket, 'inquiry'),
+		);
 	}
 
 	@AsRawStop()
@@ -65,31 +63,24 @@ class Adaptor<
 export function create<
 	aboutRpc extends {},
 	aboutHandle extends {},
-	startableName extends string,
 >(
 	filePath: string,
-	methodsNamesAboutHandle: readonly GetMethodName<aboutHandle>[] = [],
-	startableMethodName: startableName,
-): GetProxy<aboutRpc, aboutHandle, startableName> {
+): GetProxy<aboutRpc, aboutHandle> {
 	return <any>new Proxy<any>(
 		new Adaptor(filePath),
 		{
-			get(target, field: any): any {
-				if (field === startableMethodName) {
-					return target.$s;
-				} else if ((methodsNamesAboutHandle).includes(field)) {
-					return (handle: Server, ...args: any[]) => {
-						target.$s.assertState();
-						return target.handle.sendHandle(
+			get(target: Adaptor<aboutRpc, aboutHandle>, field: any): any {
+				return async (...args: any[]) => {
+					if (await target.inquiry!.inquire(field) === MethodType.HANDLE) {
+						$(target).assertState();
+						return target.aboutHandle!.sendHandle(
 							field,
-							args,
-							handle,
+							args.slice(1),
+							args[0],
 						);
-					}
-				} else {
-					return (...args: any[]) => {
-						target.$s.assertState();
-						return target.rpc!.call(field, args);
+					} else {
+						$(target).assertState();
+						return target.aboutRpc!.call(field, args);
 					}
 				}
 			}

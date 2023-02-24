@@ -9,6 +9,4 @@ export interface AboutHandle {
 	accept(handle: Server): Promise<void>;
 }
 
-export type StartableName = '$s';
-
-export type ServiceProxy = GetProxy<AboutRpc, AboutHandle, StartableName>;
+export type ServiceProxy = GetProxy<AboutRpc, AboutHandle>;

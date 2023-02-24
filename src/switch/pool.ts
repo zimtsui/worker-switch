@@ -1,7 +1,7 @@
-import { AboutHandle, AboutRpc, ServiceProxy, StartableName } from "../worker/intrefaces.js";
+import { AboutHandle, AboutRpc, ServiceProxy } from "../worker/intrefaces.js";
 import { Semque } from '@zimtsui/coroutine-locks';
 import * as Adaptor from "../adaption/adaptor/caller.js";
-import { AsRawStart, AsRawStop } from "@zimtsui/startable";
+import { $, AsRawStart, AsRawStop } from "@zimtsui/startable";
 
 
 export class WorkerPool {
@@ -17,12 +17,10 @@ export class WorkerPool {
 	}
 
 	private async refill() {
-		const proxy = Adaptor.create<AboutRpc, AboutHandle, StartableName>(
+		const proxy = Adaptor.create<AboutRpc, AboutHandle>(
 			this.filePath,
-			['accept'],
-			'$s',
 		);
-		await proxy.$s.start();
+		await $(proxy).start();
 		this.mutex.push(proxy);
 	}
 

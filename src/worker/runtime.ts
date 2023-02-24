@@ -1,15 +1,10 @@
+import { AsRawStart } from "@zimtsui/startable";
 import assert from "assert";
-import { createStartable } from "startable";
 
 
 export type CloudFunction = (...args: any[]) => any | Promise<any>;
 
 export class Runtime {
-	public $s = createStartable(
-		this.rawStart.bind(this),
-		this.rawStop.bind(this),
-	);
-
 	private fs = new Map<string, CloudFunction>();
 
 	public constructor(
@@ -22,6 +17,7 @@ export class Runtime {
 		return f;
 	}
 
+	@AsRawStart()
 	private async rawStart() {
 		await Promise.all(
 			this.specifiers.map(async specifier => {
@@ -33,6 +29,4 @@ export class Runtime {
 			}),
 		);
 	}
-
-	private async rawStop() { }
 }

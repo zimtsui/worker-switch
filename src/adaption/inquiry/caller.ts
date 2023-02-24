@@ -8,7 +8,7 @@ import { MethodType } from "./method-types.js";
 /**
  * 这只是一个 wrapper 不维护状态，由使用者来确保使用时内部资源处于正常状态。
  */
-export class Inquiry<aboutRpc extends {}> {
+export class Inquiry<aboutAll extends {}> {
 	public constructor(
 		private channel: Multiplex.Like<
 			Req<'inquire', readonly [string]>,
@@ -17,7 +17,7 @@ export class Inquiry<aboutRpc extends {}> {
 	) { }
 
 	public inquire<
-		methodName extends GetMethodName<aboutRpc>,
+		methodName extends GetMethodName<aboutAll>,
 	>(
 		methodName: methodName,
 	): Promise<MethodType> {
