@@ -4,7 +4,6 @@ import { ChildProcess as ChildProcessSocket, Multiplex } from "../../multiplex/i
 import { Control } from "../control/caller.js";
 import { Handle } from "../handle/caller.js";
 import { Rpc } from "../rpc/caller.js";
-import { GetMethodName } from "../type-functions.js";
 import { Inquiry } from "../inquiry/caller.js";
 import { MethodType } from "../inquiry/method-types.js";
 
